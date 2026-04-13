@@ -1,0 +1,76 @@
+name: AmpliScan — Monthly Scan
+
+on:
+  # ── Scheduled: runs on the 1st of every month at 08:00 UTC ─────────────────
+  schedule:
+    - cron: '0 8 1 * *'
+
+  # ── Manual trigger from GitHub Actions UI ───────────────────────────────────
+  workflow_dispatch:
+    inputs:
+      domain:
+        description: 'Domain to scan (overrides DOMAINS list)'
+        required: false
+        type: string
+      max_pages:
+        description: 'Max pages to crawl per domain'
+        required: false
+        default: '15'
+        type: string
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Run scans
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GOOGLE_SPREADSHEET_ID: ${{ secrets.GOOGLE_SPREADSHEET_ID }}
+          DEBUG: ${{ runner.debug }}
+        run: |
+          # If a domain was passed manually, scan just that one.
+          # Otherwise, iterate through the DOMAINS list below.
+
+          if [ -n "${{ github.event.inputs.domain }}" ]; then
+            DOMAINS="${{ github.event.inputs.domain }}"
+          else
+            # ── ADD YOUR DOMAINS HERE ──────────────────────────────────────
+            DOMAINS="zebrabi.com analytica.com"
+            # ──────────────────────────────────────────────────────────────
+          fi
+
+          MAX_PAGES="${{ github.event.inputs.max_pages || '15' }}"
+
+          for DOMAIN in $DOMAINS; do
+            echo ""
+            echo "════════════════════════════════════"
+            echo "  Scanning: $DOMAIN"
+            echo "════════════════════════════════════"
+            node index.js "$DOMAIN" --pages="$MAX_PAGES" || true
+            # `|| true` prevents one failed domain from stopping the rest
+          done
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: scan-logs
+          path: reports/
+          retention-days: 7
