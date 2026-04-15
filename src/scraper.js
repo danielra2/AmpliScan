@@ -5,24 +5,16 @@ const AMPLITUDE_HOSTS = [
   'api2.amplitude.com',
   'api3.amplitude.com',
   'cdn.amplitude.com',
+  'api.eu.amplitude.com',
 ];
 
-/**
- * Decodes an Amplitude network request payload into a list of events.
- * Amplitude sends events as either:
- *  - JSON body: { e: [...] } or { events: [...] }
- *  - URLencoded: e=<base64> or checksum=...&e=...
- */
 function decodeAmplitudePayload(body, contentType) {
   try {
-    // JSON payload
     if (contentType && contentType.includes('application/json')) {
       const json = JSON.parse(body);
       const events = json.e || json.events || [];
       return Array.isArray(events) ? events : [json];
     }
-
-    // URL-encoded payload (classic SDK)
     const params = new URLSearchParams(body);
     const encoded = params.get('e') || params.get('event');
     if (encoded) {
@@ -30,8 +22,6 @@ function decodeAmplitudePayload(body, contentType) {
       const events = JSON.parse(decoded);
       return Array.isArray(events) ? events : [events];
     }
-
-    // Fallback: try raw JSON
     const json = JSON.parse(body);
     const events = json.e || json.events || [json];
     return Array.isArray(events) ? events : [events];
@@ -40,16 +30,62 @@ function decodeAmplitudePayload(body, contentType) {
   }
 }
 
-/**
- * Scrapes a domain by visiting a set of pages and intercepting all
- * Amplitude requests. Returns an array of normalised event objects.
- */
+async function simulateInteractions(page) {
+  try {
+    // Scroll slowly down
+    await page.evaluate(async () => {
+      await new Promise((resolve) => {
+        let scrolled = 0;
+        const interval = setInterval(() => {
+          window.scrollBy(0, 200);
+          scrolled += 200;
+          if (scrolled >= document.body.scrollHeight) {
+            clearInterval(interval);
+            resolve();
+          }
+        }, 150);
+      });
+    });
+
+    await page.waitForTimeout(1000);
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(500);
+
+    // Move mouse around
+    const { width, height } = page.viewportSize();
+    await page.mouse.move(width / 2, height / 2);
+    await page.mouse.move(width / 4, height / 4);
+    await page.mouse.move((width * 3) / 4, height / 2);
+
+    // Hover over nav elements
+    const safeSelectors = [
+      'nav a', 'header a', '.nav a',
+      '[role="navigation"] a',
+      'button:not([type="submit"])',
+      '[class*="nav"] a',
+      '[class*="menu"] a',
+    ];
+
+    for (const selector of safeSelectors) {
+      try {
+        const elements = await page.$$(selector);
+        for (const el of elements.slice(0, 2)) {
+          const isVisible = await el.isVisible();
+          if (isVisible) {
+            await el.hover();
+            await page.waitForTimeout(300);
+            break;
+          }
+        }
+      } catch { }
+    }
+
+    await page.waitForTimeout(2000);
+  } catch { }
+}
+
 export async function scrapeDomain(domain, options = {}) {
-  const {
-    maxPages = 10,
-    headless = true,
-    waitMs = 3000,
-  } = options;
+  const { maxPages = 10, headless = true, waitMs = 5000 } = options;
 
   const startUrl = domain.startsWith('http') ? domain : `https://${domain}`;
   const capturedEvents = [];
@@ -60,13 +96,12 @@ export async function scrapeDomain(domain, options = {}) {
 
   const browser = await chromium.launch({ headless });
   const context = await browser.newContext({
-    userAgent:
-      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    viewport: { width: 1280, height: 800 },
   });
 
   const page = await context.newPage();
 
-  // Intercept all requests
   page.on('request', async (request) => {
     const url = request.url();
     const isAmplitude = AMPLITUDE_HOSTS.some((h) => url.includes(h));
@@ -92,9 +127,14 @@ export async function scrapeDomain(domain, options = {}) {
         });
         console.log(`  ✅ Event: ${ev.event_type}`);
       }
-    } catch {
-      // silently skip malformed payloads
-    }
+    } catch { }
+  });
+
+  page.on('response', async (response) => {
+    const url = response.url();
+    const isAmplitude = AMPLITUDE_HOSTS.some((h) => url.includes(h));
+    if (!isAmplitude) return;
+    console.log(`  📡 Amplitude endpoint hit: ${url.split('?')[0]}`);
   });
 
   let pagesVisited = 0;
@@ -106,23 +146,27 @@ export async function scrapeDomain(domain, options = {}) {
 
     try {
       console.log(`\n  📄 Visiting: ${url}`);
-      await page.goto(url, { waitUntil: 'networkidle', timeout: 20000 });
+      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForTimeout(waitMs);
-
-      // Scroll to trigger lazy-loaded tracking
-      await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-      await page.waitForTimeout(1000);
-
+      await simulateInteractions(page);
+      await page.waitForTimeout(2000);
       pagesVisited++;
 
-      // Collect same-domain links
       if (pagesVisited < maxPages) {
         const links = await page.evaluate((base) => {
           return Array.from(document.querySelectorAll('a[href]'))
             .map((a) => a.href)
-            .filter((href) => href.startsWith(base) && !href.includes('#'))
+            .filter((href) => {
+              try {
+                const u = new URL(href);
+                const b = new URL(base);
+                return u.hostname === b.hostname && !href.includes('#');
+              } catch { return false; }
+            })
             .slice(0, 20);
         }, startUrl);
+
+        // daniel is beautidul
 
         for (const link of links) {
           if (!visitedUrls.has(link)) queuedUrls.push(link);
@@ -134,10 +178,6 @@ export async function scrapeDomain(domain, options = {}) {
   }
 
   await browser.close();
-
-  console.log(
-    `\n✔ Scan complete. ${capturedEvents.length} events captured across ${pagesVisited} pages.\n`
-  );
-
+  console.log(`\n✔ Scan complete. ${capturedEvents.length} events captured across ${pagesVisited} pages.\n`);
   return capturedEvents;
 }

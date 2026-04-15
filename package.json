@@ -1,9 +1,10 @@
 {
   "name": "ampliscan",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "scan": "node index.js"
   },
   "keywords": [],
   "author": "",
@@ -12,7 +13,6 @@
   "dependencies": {
     "chalk": "^5.6.2",
     "dotenv": "^17.4.2",
-    "googleapis": "^171.4.0",
     "playwright": "^1.59.1"
   }
 }
