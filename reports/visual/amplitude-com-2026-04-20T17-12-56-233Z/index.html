@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AmpliScan Visual Map - amplitude.com</title>
+  <style>
+    :root {
+      --bg: #f5f3ef;
+      --card: #fffdf8;
+      --ink: #1e1b16;
+      --muted: #7d746a;
+      --accent: #ff5a1f;
+      --accent-2: #0b6e4f;
+      --line: #e7dfd4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 20% 0%, #fff7e8 0, transparent 40%), var(--bg);
+      color: var(--ink);
+    }
+    main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
+    .hero {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 18px 20px;
+      box-shadow: 0 12px 24px rgba(31, 20, 10, 0.06);
+      margin-bottom: 22px;
+    }
+    .hero h1 { margin: 0 0 8px; font-size: 1.8rem; }
+    .hero p { margin: 6px 0; color: var(--muted); }
+    .page-section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+    .page-section h2 { margin: 0 0 6px; }
+    .page-section p { margin: 4px 0; }
+    .meta { color: var(--muted); font-size: 0.95rem; }
+    .layout { display: grid; grid-template-columns: minmax(320px, 2fr) minmax(250px, 1fr); gap: 16px; margin-top: 12px; }
+    .shot-wrap {
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fbfaf7;
+    }
+    .shot-wrap img { width: 100%; display: block; }
+    .marker {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      border-radius: 999px;
+      transform: translate(-50%, -50%);
+      background: var(--accent);
+      border: 2px solid #fff;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 700;
+      box-shadow: 0 8px 20px rgba(255, 90, 31, 0.4);
+    }
+    .shot-missing {
+      border: 1px dashed var(--line);
+      border-radius: 12px;
+      padding: 20px;
+      color: var(--muted);
+    }
+    aside {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px;
+      background: #fff;
+      max-height: 80vh;
+      overflow: auto;
+    }
+    aside h3 { margin: 0 0 10px; }
+    ol { margin: 0; padding: 0 0 0 20px; }
+    li { margin: 0 0 10px; }
+    .badge {
+      display: inline-block;
+      min-width: 34px;
+      margin-right: 8px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #ffe6dc;
+      color: #a53711;
+      font-size: 0.75rem;
+      text-align: center;
+      font-weight: 700;
+    }
+    .badge.muted { background: #eef3f0; color: #34594b; }
+    .count { color: var(--muted); font-size: 0.85rem; margin-left: 8px; }
+    .props { color: #534c45; font-size: 0.84rem; margin-top: 3px; }
+    .hint { color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 8px; }
+    @media (max-width: 1020px) {
+      .layout { grid-template-columns: 1fr; }
+      aside { max-height: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <h1>AmpliScan Visual Event Map</h1>
+      <p><strong>Domain:</strong> amplitude.com</p>
+      <p><strong>Generated:</strong> 2026-04-20T17:12:56.233Z</p>
+      <p>This report maps captured events to page screenshots. Numbered dots show events with a likely UI interaction location.</p>
+    </section>
+    
+        <section class="page-section">
+          <header>
+            <h2>Page 1: /</h2>
+            <p><a href="https://amplitude.com/" target="_blank" rel="noreferrer">https://amplitude.com/</a></p>
+            <p class="meta">50 events captured | AI Analytics Platform for Modern Digital Analytics | Amplitude</p>
+          </header>
+          <div class="layout">
+            
+          <div class="shot-wrap">
+            <img src="screenshots/01-.png" alt="Screenshot 1" />
+            
+          </div>
+        
+            <aside>
+              <h3>Tracked events</h3>
+              <ol>
+            <li>
+              <span class="badge muted">list</span>
+              <strong>$impression</strong>
+              <span class="count">15 hits</span>
+              <div class="props">flag_key: q325-homepage-rebrand-starter-signup-ct... | experiment_key: exp-1 | metadata: {&quot;deliveryMethod&quot;:&quot;web&quot;,&quot;deployed&quot;:true... | [Amplitude] Page Doma...: amplitude.com</div>
+            </li>
+          
+            <li>
+              <span class="badge muted">list</span>
+              <strong>$identify</strong>
+              <span class="count">8 hits</span>
+              <div class="props">[Amplitude] Page Doma...: amplitude.com | [Amplitude] Page Loca...: https://amplitude.com/ | [Amplitude] Page Path: / | [Amplitude] Page Title: AI Analytics Platform for Modern Digita...</div>
+            </li>
+          
+            <li>
+              <span class="badge muted">list</span>
+              <strong>[Amplitude] Viewport Content Updated</strong>
+              <span class="count">6 hits</span>
+              <div class="props">[Amplitude] Page URL: https://amplitude.com/ | [Amplitude] Max Page X: 1280 | [Amplitude] Max Page Y: 800 | [Amplitude] Viewport ...: 800</div>
+            </li>
+          
+            <li>
+              <span class="badge muted">list</span>
+              <strong>session_start</strong>
+              <span class="count">4 hits</span>
+              <div class="props">[Amplitude] Page Doma...: amplitude.com | [Amplitude] Page Loca...: https://amplitude.com/ | [Amplitude] Page Path: / | [Amplitude] Page Title: AI Analytics Platform for Modern Digita...</div>
+            </li>
+          
+            <li>
+              <span class="badge muted">list</span>
+              <strong>[Amplitude] Page Viewed</strong>
+              <span class="count">4 hits</span>
+              <div class="props">[Amplitude] Page Doma...: amplitude.com | [Amplitude] Page Loca...: https://amplitude.com/ | [Amplitude] Page Path: / | [Amplitude] Page Title: AI Analytics Platform for Modern Digita...</div>
+            </li>
+          
+            <li>
+              <span class="badge muted">list</span>
+              <strong>Video Played</strong>
+              <span class="count">4 hits</span>
+              <div class="props">pageName: AI Analytics Platform for Modern Digita... | progress: 0 % | video: Homepage animation - 2026Q2 | id: b3qh6t1p45</div>
+            </li>
+          
+            <li>
+              <span class="badge muted">list</span>
+              <strong>$exposure</strong>
+              <span class="count">4 hits</span>
+              <div class="props">flag_key: guide-copy-of-monetization | experiment_key: exp-1 | variant: control | [Guides-Surveys] Vers...: 1</div>
+            </li>
+          
+            <li>
+              <span class="badge muted">list</span>
+              <strong>Page Viewed</strong>
+              <span class="count">2 hits</span>
+              <div class="props">path: / | referrer:  | search:  | title: AI Analytics Platform for Modern Digita...</div>
+            </li>
+          
+            <li>
+              <span class="badge muted">list</span>
+              <strong>Video Paused</strong>
+              <span class="count">2 hits</span>
+              <div class="props">pageName: AI Analytics Platform for Modern Digita... | progress: 10 % | video: Homepage animation - 2026Q2 | id: b3qh6t1p45</div>
+            </li>
+          
+            <li>
+              <span class="badge muted">list</span>
+              <strong>[Cookie-Control] viewed widget</strong>
+              <span class="count">1 hits</span>
+              <div class="props">[Amplitude] Page Doma...: amplitude.com | [Amplitude] Page Loca...: https://amplitude.com/ | [Amplitude] Page Path: / | [Amplitude] Page Title: AI Analytics Platform for Modern Digita...</div>
+            </li>
+          </ol>
+              <p class="hint">10 events were captured without a confident click coordinate and are listed as "list" items.</p>
+            </aside>
+          </div>
+        </section>
+      
+  </main>
+</body>
+</html>

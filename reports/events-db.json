@@ -4,8 +4,8 @@
       "$identify": {
         "event_type": "$identify",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-15T09:06:26.235Z",
-        "times_seen": 39,
+        "last_seen": "2026-04-20T17:12:56.229Z",
+        "times_seen": 47,
         "sample_properties": {
           "[Amplitude] Page Domain": "amplitude.com",
           "[Amplitude] Page Location": "https://amplitude.com/",
@@ -21,8 +21,8 @@
       "session_start": {
         "event_type": "session_start",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-15T09:06:26.235Z",
-        "times_seen": 17,
+        "last_seen": "2026-04-20T17:12:56.229Z",
+        "times_seen": 21,
         "sample_properties": {
           "[Amplitude] Page Domain": "amplitude.com",
           "[Amplitude] Page Location": "https://amplitude.com/",
@@ -39,8 +39,8 @@
       "[Amplitude] Page Viewed": {
         "event_type": "[Amplitude] Page Viewed",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-15T09:06:26.235Z",
-        "times_seen": 24,
+        "last_seen": "2026-04-20T17:12:56.229Z",
+        "times_seen": 28,
         "sample_properties": {
           "[Amplitude] Page Domain": "amplitude.com",
           "[Amplitude] Page Location": "https://amplitude.com/",
@@ -59,8 +59,8 @@
       "Page Viewed": {
         "event_type": "Page Viewed",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-15T09:06:26.235Z",
-        "times_seen": 10,
+        "last_seen": "2026-04-20T17:12:56.229Z",
+        "times_seen": 12,
         "sample_properties": {
           "path": "/",
           "referrer": "",
@@ -83,8 +83,8 @@
       "Video Played": {
         "event_type": "Video Played",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-15T09:06:26.235Z",
-        "times_seen": 16,
+        "last_seen": "2026-04-20T17:12:56.229Z",
+        "times_seen": 20,
         "sample_properties": {
           "pageName": "AI Analytics Platform for Modern Digital Analytics ",
           "progress": "0 %",
@@ -106,8 +106,8 @@
       "$exposure": {
         "event_type": "$exposure",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-15T09:06:26.235Z",
-        "times_seen": 14,
+        "last_seen": "2026-04-20T17:12:56.229Z",
+        "times_seen": 18,
         "sample_properties": {
           "flag_key": "guide-copy-of-monetization",
           "experiment_key": "exp-1",
@@ -135,8 +135,8 @@
       "[Amplitude] Viewport Content Updated": {
         "event_type": "[Amplitude] Viewport Content Updated",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-15T09:06:26.235Z",
-        "times_seen": 48,
+        "last_seen": "2026-04-20T17:12:56.229Z",
+        "times_seen": 54,
         "sample_properties": {
           "[Amplitude] Page URL": "https://amplitude.com/",
           "[Amplitude] Max Page X": 1280,
@@ -212,8 +212,8 @@
       "$impression": {
         "event_type": "$impression",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-15T09:06:26.235Z",
-        "times_seen": 78,
+        "last_seen": "2026-04-20T17:12:56.229Z",
+        "times_seen": 93,
         "sample_properties": {
           "flag_key": "q325-homepage-rebrand-starter-signup-cta-free",
           "experiment_key": "exp-1",
@@ -248,8 +248,8 @@
       "[Cookie-Control] viewed widget": {
         "event_type": "[Cookie-Control] viewed widget",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-15T09:06:26.235Z",
-        "times_seen": 6,
+        "last_seen": "2026-04-20T17:12:56.229Z",
+        "times_seen": 7,
         "sample_properties": {
           "[Amplitude] Page Domain": "amplitude.com",
           "[Amplitude] Page Location": "https://amplitude.com/",
@@ -266,8 +266,8 @@
       "Video Paused": {
         "event_type": "Video Paused",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-15T09:06:26.235Z",
-        "times_seen": 8,
+        "last_seen": "2026-04-20T17:12:56.229Z",
+        "times_seen": 10,
         "sample_properties": {
           "pageName": "AI Analytics Platform for Modern Digital Analytics ",
           "progress": "10 %",
@@ -373,8 +373,268 @@
         "dropped_events": [
           "[Amplitude] Network Request"
         ]
+      },
+      {
+        "scan_id": "amplitude.com-1776705176229",
+        "scanned_at": "2026-04-20T17:12:56.229Z",
+        "pages_visited": 1,
+        "total_events": 50,
+        "unique_events": 10,
+        "new_events": [],
+        "dropped_events": [
+          "session_end",
+          "[Amplitude] Network Request"
+        ]
       }
     ],
-    "lastScan": "2026-04-15T09:06:26.235Z"
+    "lastScan": "2026-04-20T17:12:56.229Z"
+  },
+  "http://szallas.hu/": {
+    "events": {
+      "$identify": {
+        "event_type": "$identify",
+        "first_seen": "2026-04-15T09:55:28.595Z",
+        "last_seen": "2026-04-15T09:55:28.595Z",
+        "times_seen": 1,
+        "sample_properties": {},
+        "platform": "Web",
+        "app_version": null
+      },
+      "session_start": {
+        "event_type": "session_start",
+        "first_seen": "2026-04-15T09:55:28.595Z",
+        "last_seen": "2026-04-15T09:55:28.595Z",
+        "times_seen": 1,
+        "sample_properties": {},
+        "platform": "Web",
+        "app_version": null
+      },
+      "[Amplitude] Page Viewed": {
+        "event_type": "[Amplitude] Page Viewed",
+        "first_seen": "2026-04-15T09:55:28.595Z",
+        "last_seen": "2026-04-15T09:55:28.595Z",
+        "times_seen": 21,
+        "sample_properties": {
+          "[Amplitude] Page Domain": "szallas.hu",
+          "[Amplitude] Page Location": "https://szallas.hu/",
+          "[Amplitude] Page Path": "/",
+          "[Amplitude] Page Title": "Szallas.hu - Úgy is lett!",
+          "[Amplitude] Page URL": "https://szallas.hu/",
+          "[Amplitude] Page Counter": 1
+        },
+        "platform": "Web",
+        "app_version": null
+      },
+      "[Amplitude] Element Clicked": {
+        "event_type": "[Amplitude] Element Clicked",
+        "first_seen": "2026-04-15T09:55:28.595Z",
+        "last_seen": "2026-04-15T09:55:28.595Z",
+        "times_seen": 1,
+        "sample_properties": {
+          "[Amplitude] Element Hierarchy": [
+            {
+              "tag": "button",
+              "index": 0,
+              "indexOfType": 0,
+              "classes": [
+                "close"
+              ],
+              "attrs": {
+                "type": "button",
+                "data-dismiss": "modal",
+                "aria-label": "Bezárom"
+              }
+            },
+            {
+              "tag": "div",
+              "index": 1,
+              "indexOfType": 1,
+              "prevSib": "div",
+              "classes": [
+                "hero-modal__close"
+              ]
+            },
+            {
+              "tag": "div",
+              "index": 0,
+              "indexOfType": 0,
+              "classes": [
+                "hero-modal"
+              ]
+            },
+            {
+              "tag": "div",
+              "index": 0,
+              "indexOfType": 0,
+              "classes": [
+                "modal",
+                "fade",
+                "js-nl-modal-subscribe",
+                "in"
+              ]
+            },
+            {
+              "tag": "div",
+              "index": 5,
+              "indexOfType": 2,
+              "prevSib": "div",
+              "classes": [
+                "js-newsletter-modal-variants"
+              ]
+            },
+            {
+              "tag": "div",
+              "index": 3,
+              "indexOfType": 2,
+              "prevSib": "div",
+              "classes": [
+                "row"
+              ]
+            },
+            {
+              "tag": "main",
+              "index": 3,
+              "indexOfType": 0,
+              "prevSib": "header",
+              "classes": [
+                "container-fluid",
+                "main-container",
+                "search-list-container"
+              ]
+            },
+            {
+              "tag": "body",
+              "index": 1,
+              "indexOfType": 0,
+              "prevSib": "head",
+              "classes": [
+                "listHotel",
+                "page_listHotel",
+                "default",
+                "hu",
+                "ab-filter-redesign",
+                "list_type_simple",
+                "has-photo",
+                "modal-open"
+              ],
+              "attrs": {
+                "data-test": "body"
+              }
+            }
+          ],
+          "[Amplitude] Element Tag": "button",
+          "[Amplitude] Element Position Left": 1239,
+          "[Amplitude] Element Position Top": 270,
+          "[Amplitude] Element Parent Label": "Ár",
+          "[Amplitude] Page URL": "https://szallas.hu/badacsony",
+          "[Amplitude] Page Title": "Badacsony szálláshelyek - 50 ajánlat - Szallas.hu",
+          "[Amplitude] Viewport Height": 800,
+          "[Amplitude] Viewport Width": 1280,
+          "[Amplitude] Element Class": "close",
+          "[Amplitude] Element Aria Label": "Bezárom"
+        },
+        "platform": "Web",
+        "app_version": null
+      }
+    },
+    "scans": [
+      {
+        "scan_id": "http://szallas.hu/-1776246928595",
+        "scanned_at": "2026-04-15T09:55:28.595Z",
+        "pages_visited": 40,
+        "total_events": 24,
+        "unique_events": 4,
+        "new_events": [
+          "$identify",
+          "session_start",
+          "[Amplitude] Page Viewed",
+          "[Amplitude] Element Clicked"
+        ],
+        "dropped_events": []
+      }
+    ],
+    "lastScan": "2026-04-15T09:55:28.595Z"
+  },
+  "selfrealizationfellowship.org": {
+    "events": {
+      "$identify": {
+        "event_type": "$identify",
+        "first_seen": "2026-04-16T18:20:37.023Z",
+        "last_seen": "2026-04-16T18:20:37.023Z",
+        "times_seen": 1,
+        "sample_properties": {},
+        "platform": "Web",
+        "app_version": null
+      },
+      "session_start": {
+        "event_type": "session_start",
+        "first_seen": "2026-04-16T18:20:37.023Z",
+        "last_seen": "2026-04-16T18:20:37.023Z",
+        "times_seen": 1,
+        "sample_properties": {},
+        "platform": "Web",
+        "app_version": null
+      },
+      "[Amplitude] Page Viewed": {
+        "event_type": "[Amplitude] Page Viewed",
+        "first_seen": "2026-04-16T18:20:37.023Z",
+        "last_seen": "2026-04-16T18:20:37.023Z",
+        "times_seen": 1,
+        "sample_properties": {
+          "[Amplitude] Page Domain": "yogananda.org",
+          "[Amplitude] Page Location": "https://yogananda.org/self-realization-fellowship",
+          "[Amplitude] Page Path": "/self-realization-fellowship",
+          "[Amplitude] Page Title": "Self-Realization Fellowship | Self-Realization Fellowship",
+          "[Amplitude] Page URL": "https://yogananda.org/self-realization-fellowship",
+          "[Amplitude] Page Counter": 1
+        },
+        "platform": "Web",
+        "app_version": null
+      },
+      "viewed page": {
+        "event_type": "viewed page",
+        "first_seen": "2026-04-16T18:20:37.023Z",
+        "last_seen": "2026-04-16T18:20:37.023Z",
+        "times_seen": 1,
+        "sample_properties": {
+          "page_name": "/self-realization-fellowship",
+          "page_url": "https://yogananda.org/self-realization-fellowship",
+          "domain": "yogananda.org",
+          "referrer": ""
+        },
+        "platform": "Web",
+        "app_version": null
+      },
+      "page scrolled": {
+        "event_type": "page scrolled",
+        "first_seen": "2026-04-16T18:20:37.023Z",
+        "last_seen": "2026-04-16T18:20:37.023Z",
+        "times_seen": 5,
+        "sample_properties": {
+          "amount_scrolled": 10,
+          "page_URL": "https://yogananda.org/self-realization-fellowship"
+        },
+        "platform": "Web",
+        "app_version": null
+      }
+    },
+    "scans": [
+      {
+        "scan_id": "selfrealizationfellowship.org-1776363637023",
+        "scanned_at": "2026-04-16T18:20:37.023Z",
+        "pages_visited": 3,
+        "total_events": 9,
+        "unique_events": 5,
+        "new_events": [
+          "$identify",
+          "session_start",
+          "[Amplitude] Page Viewed",
+          "viewed page",
+          "page scrolled"
+        ],
+        "dropped_events": []
+      }
+    ],
+    "lastScan": "2026-04-16T18:20:37.023Z"
   }
 }

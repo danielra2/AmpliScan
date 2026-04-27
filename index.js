@@ -3,15 +3,21 @@ import 'dotenv/config';
 import chalk from 'chalk';
 import { scrapeDomain } from './src/scraper.js';
 import { saveScanResults } from './src/storage.js';
+import { generateVisualReport } from './src/visual-report.js';
 
 const args = process.argv.slice(2);
 const domainArg = args.find((a) => !a.startsWith('--'));
 const maxPages = parseInt(args.find((a) => a.startsWith('--pages='))?.split('=')[1]) || 10;
 const headless = !args.includes('--headed');
+const makeVisualMap = args.includes('--visual-map');
+const visualPageLimit = parseInt(args.find((a) => a.startsWith('--visual-pages='))?.split('=')[1]) || 8;
+const username = args.find((a) => a.startsWith('--username='))?.split('=')[1];
+const password = args.find((a) => a.startsWith('--password='))?.split('=')[1];
+const loginUrl = args.find((a) => a.startsWith('--loginUrl='))?.split('=')[1];
 
 if (!domainArg) {
-  console.error(chalk.red('Usage: node index.js <domain> [--pages=N] [--headed]'));
-  console.error(chalk.gray('  Example: node index.js zebrabi.com --pages=15'));
+  console.error(chalk.red('Usage: node index.js <domain> [--pages=N] [--headed] [--username=USER] [--password=PASS] [--loginUrl=URL] [--visual-map] [--visual-pages=N]'));
+  console.error(chalk.gray('  Example: node index.js example.com --pages=15 --visual-map --visual-pages=6 --username=test@example.com --password=abc123 --loginUrl=https://example.com/login'));
   process.exit(1);
 }
 
@@ -20,10 +26,13 @@ console.log(chalk.bold.cyan('║        AmpliScan v1.0        ║'));
 console.log(chalk.bold.cyan('╚══════════════════════════════╝'));
 console.log(chalk.gray(`  Domain : ${domainArg}`));
 console.log(chalk.gray(`  Pages  : up to ${maxPages}`));
-console.log(chalk.gray(`  Mode   : ${headless ? 'headless' : 'headed (visible browser)'}\n`));
+console.log(chalk.gray(`  Mode   : ${headless ? 'headless' : 'headed (visible browser)'}`));
+console.log(chalk.gray(`  Visual : ${makeVisualMap ? `enabled (top ${visualPageLimit} pages)` : 'disabled'}`));
+if (username) console.log(chalk.gray(`  Login  : ${username} @ ${loginUrl || domainArg}\n`));
+else console.log(chalk.gray(`  Login  : anonymous\n`));
 
 try {
-  const events = await scrapeDomain(domainArg, { maxPages, headless });
+  const events = await scrapeDomain(domainArg, { maxPages, headless, username, password, loginUrl });
 
   if (events.length === 0) {
     console.log(chalk.yellow('⚠️  No Amplitude events captured. The site may not use Amplitude, or events fire after login.'));
@@ -77,6 +86,22 @@ try {
 
   console.log(chalk.bold('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'));
   console.log(chalk.cyan(`  ✅ Full report saved to: ${reportPath}`));
+
+  if (makeVisualMap) {
+    console.log(chalk.cyan('\n🖼️  Building visual event map...'));
+    const visual = await generateVisualReport(domainArg, events, {
+      pageLimit: visualPageLimit,
+      headless,
+    });
+
+    if (visual) {
+      console.log(chalk.cyan(`  ✅ Visual map saved to: ${visual.reportPath}`));
+      console.log(chalk.gray(`  ↳ Pages mapped: ${visual.pagesAnalyzed} | Events considered: ${visual.totalEvents}`));
+    } else {
+      console.log(chalk.yellow('  ⚠️  Visual map skipped: no page-level event URLs found in captured data.'));
+    }
+  }
+
   console.log(chalk.bold('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n'));
 
 } catch (err) {

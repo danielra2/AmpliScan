@@ -1,0 +1,129 @@
+{
+  "domain": "selfrealizationfellowship.org",
+  "scanned_at": "2026-04-16T18:20:37.023Z",
+  "unique_events": 5,
+  "new_events": [
+    "$identify",
+    "session_start",
+    "[Amplitude] Page Viewed",
+    "viewed page",
+    "page scrolled"
+  ],
+  "dropped_events": [],
+  "stale_days": null,
+  "events": [
+    {
+      "event_type": "$identify",
+      "event_properties": {},
+      "user_properties": {
+        "$setOnce": {
+          "initial_utm_campaign": "EMPTY",
+          "initial_utm_content": "EMPTY",
+          "initial_utm_id": "EMPTY",
+          "initial_utm_medium": "EMPTY",
+          "initial_utm_source": "EMPTY",
+          "initial_utm_term": "EMPTY",
+          "initial_referrer": "EMPTY",
+          "initial_referring_domain": "EMPTY",
+          "initial_dclid": "EMPTY",
+          "initial_gbraid": "EMPTY",
+          "initial_gclid": "EMPTY",
+          "initial_fbclid": "EMPTY",
+          "initial_ko_click_id": "EMPTY",
+          "initial_li_fat_id": "EMPTY",
+          "initial_msclkid": "EMPTY",
+          "initial_rtd_cid": "EMPTY",
+          "initial_ttclid": "EMPTY",
+          "initial_twclid": "EMPTY",
+          "initial_wbraid": "EMPTY"
+        },
+        "$unset": {
+          "utm_campaign": "-",
+          "utm_content": "-",
+          "utm_id": "-",
+          "utm_medium": "-",
+          "utm_source": "-",
+          "utm_term": "-",
+          "referrer": "-",
+          "referring_domain": "-",
+          "dclid": "-",
+          "gbraid": "-",
+          "gclid": "-",
+          "fbclid": "-",
+          "ko_click_id": "-",
+          "li_fat_id": "-",
+          "msclkid": "-",
+          "rtd_cid": "-",
+          "ttclid": "-",
+          "twclid": "-",
+          "wbraid": "-"
+        }
+      },
+      "platform": "Web",
+      "os_name": null,
+      "app_version": null,
+      "captured_at": "2026-04-16T18:19:55.535Z",
+      "source_page": "https://yogananda.org/self-realization-fellowship",
+      "count": 1
+    },
+    {
+      "event_type": "session_start",
+      "event_properties": {},
+      "user_properties": {},
+      "platform": "Web",
+      "os_name": null,
+      "app_version": null,
+      "captured_at": "2026-04-16T18:19:55.539Z",
+      "source_page": "https://yogananda.org/self-realization-fellowship",
+      "count": 1
+    },
+    {
+      "event_type": "[Amplitude] Page Viewed",
+      "event_properties": {
+        "[Amplitude] Page Domain": "yogananda.org",
+        "[Amplitude] Page Location": "https://yogananda.org/self-realization-fellowship",
+        "[Amplitude] Page Path": "/self-realization-fellowship",
+        "[Amplitude] Page Title": "Self-Realization Fellowship | Self-Realization Fellowship",
+        "[Amplitude] Page URL": "https://yogananda.org/self-realization-fellowship",
+        "[Amplitude] Page Counter": 1
+      },
+      "user_properties": {},
+      "platform": "Web",
+      "os_name": null,
+      "app_version": null,
+      "captured_at": "2026-04-16T18:19:55.539Z",
+      "source_page": "https://yogananda.org/self-realization-fellowship",
+      "count": 1
+    },
+    {
+      "event_type": "viewed page",
+      "event_properties": {
+        "page_name": "/self-realization-fellowship",
+        "page_url": "https://yogananda.org/self-realization-fellowship",
+        "domain": "yogananda.org",
+        "referrer": ""
+      },
+      "user_properties": {},
+      "platform": "Web",
+      "os_name": null,
+      "app_version": null,
+      "captured_at": "2026-04-16T18:19:55.539Z",
+      "source_page": "https://yogananda.org/self-realization-fellowship",
+      "count": 1
+    },
+    {
+      "event_type": "page scrolled",
+      "event_properties": {
+        "amount_scrolled": 10,
+        "page_URL": "https://yogananda.org/self-realization-fellowship"
+      },
+      "user_properties": {},
+      "platform": "Web",
+      "os_name": null,
+      "app_version": null,
+      "captured_at": "2026-04-16T18:19:57.228Z",
+      "source_page": "https://yogananda.org/self-realization-fellowship",
+      "count": 5
+    }
+  ]
+}
