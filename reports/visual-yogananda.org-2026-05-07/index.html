@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>AmpliScan — yogananda.org</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#0a0a0f;--surface:#111118;--surface2:#18181f;
+      --border:#2a2a35;--accent:#1A6BFF;--accent2:#00d4aa;
+      --text:#e8e8f0;--muted:#6b6b80;--dim:#3a3a4a;
+      --red:#ff4d6d;--yellow:#ffd166;--green:#00d4aa;--r:12px;
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+    /* Header */
+    .header{background:var(--surface);border-bottom:1px solid var(--border);padding:28px 48px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px)}
+    .logo{display:flex;align-items:center;gap:12px}
+    .logo-icon{width:34px;height:34px;background:var(--accent);border-radius:8px;display:flex;align-items:center;justify-content:center}
+    .logo-text{font-size:19px;font-weight:800;letter-spacing:-.5px}
+    .logo-sub{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px}
+    .header-right{text-align:right}
+    .header-domain{font-size:15px;font-weight:700;color:var(--accent2)}
+    .header-date{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:3px}
+
+    /* Stats */
+    .stats-bar{display:flex;gap:1px;background:var(--border);border-bottom:1px solid var(--border)}
+    .stat{flex:1;background:var(--surface);padding:18px 32px;display:flex;flex-direction:column;gap:4px}
+    .stat-value{font-size:30px;font-weight:800;letter-spacing:-1px}
+    .stat-value.blue{color:var(--accent)}
+    .stat-value.green{color:var(--accent2)}
+    .stat-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+
+    /* Mode banner */
+    .mode-banner{padding:12px 48px;font-family:'DM Mono',monospace;font-size:12px;border-bottom:1px solid var(--border)}
+    .mode-banner.first{background:rgba(26,107,255,.08);color:var(--accent)}
+    .mode-banner.repeat{background:rgba(0,212,170,.08);color:var(--accent2)}
+
+    /* Main */
+    .main{padding:40px 48px;max-width:1400px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+
+    /* Dropped */
+    .dropped-section{background:rgba(255,77,109,.06);border:1px solid rgba(255,77,109,.2);border-radius:var(--r);padding:20px 24px}
+    .dropped-title{font-size:14px;font-weight:700;color:var(--red);margin-bottom:12px}
+    .dropped-sub{font-weight:400;font-size:12px;color:var(--muted);margin-left:8px}
+    .dropped-list{display:flex;flex-wrap:wrap;gap:8px}
+    .dropped-tag{font-family:'DM Mono',monospace;font-size:11px;padding:4px 10px;border-radius:6px;background:rgba(255,77,109,.1);color:var(--red);border:1px solid rgba(255,77,109,.2)}
+
+    /* Page card */
+    .page-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;opacity:0;transform:translateY(14px);animation:fadeUp .35s ease forwards}
+    @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+    .card-header{padding:16px 24px;border-bottom:1px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:space-between}
+    .page-meta{display:flex;align-items:center;gap:14px}
+    .page-number{font-family:'DM Mono',monospace;font-size:12px;color:var(--dim)}
+    .page-url{font-size:14px;font-weight:700;word-break:break-all}
+    .page-counts{display:flex;align-items:center;gap:8px;margin-top:3px}
+    .event-count{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted)}
+    .new-count{font-family:'DM Mono',monospace;font-size:11px;color:var(--accent2);background:rgba(0,212,170,.1);padding:1px 7px;border-radius:4px;border:1px solid rgba(0,212,170,.2)}
+    .visit-link{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-decoration:none;padding:5px 10px;border:1px solid var(--border);border-radius:6px;flex-shrink:0;transition:color .15s,border-color .15s}
+    .visit-link:hover{color:var(--text);border-color:var(--muted)}
+
+    .card-body{display:grid;grid-template-columns:1fr 320px;min-height:300px}
+
+    /* Screenshot */
+    .screenshot-col{border-right:1px solid var(--border);overflow:hidden;background:#000;position:relative}
+    .screenshot-col img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;opacity:.88;transition:opacity .2s}
+    .screenshot-col:hover img{opacity:1}
+    .no-screenshot{display:flex;align-items:center;justify-content:center;height:100%;min-height:280px;color:var(--dim);font-family:'DM Mono',monospace;font-size:12px}
+
+    /* Events */
+    .events-col{padding:16px;overflow-y:auto;max-height:460px}
+    .events-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+    .events-list{display:flex;flex-direction:column;gap:7px}
+    .event-item{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 11px;transition:border-color .15s}
+    .event-item:hover{border-color:var(--accent)}
+    .event-item.is-new{border-color:rgba(0,212,170,.3);background:rgba(0,212,170,.04)}
+    .event-header{display:flex;align-items:center;gap:7px}
+    .amp-dot{flex-shrink:0;display:flex;align-items:center}
+    .event-name{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--text);word-break:break-word;flex:1}
+    .new-badge{font-family:'DM Mono',monospace;font-size:9px;padding:2px 6px;border-radius:4px;background:rgba(0,212,170,.15);color:var(--accent2);border:1px solid rgba(0,212,170,.3);flex-shrink:0}
+    .props{display:flex;flex-wrap:wrap;gap:3px;margin-top:6px;padding-top:6px;border-top:1px solid var(--border)}
+    .prop-tag{font-family:'DM Mono',monospace;font-size:9px;padding:2px 5px;border-radius:3px;background:var(--surface2);color:var(--accent2);border:1px solid var(--border)}
+    .prop-tag.more{color:var(--muted)}
+
+    /* Footer */
+    .footer{text-align:center;padding:36px;border-top:1px solid var(--border);font-family:'DM Mono',monospace;font-size:11px;color:var(--dim)}
+
+    @media(max-width:900px){
+      .card-body{grid-template-columns:1fr}
+      .screenshot-col{border-right:none;border-bottom:1px solid var(--border);min-height:180px}
+      .header,.main,.mode-banner{padding-left:20px;padding-right:20px}
+      .stats-bar{flex-wrap:wrap}
+    }
+  </style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 18L8.5 7L12 14L15 10L20 18" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div>
+      <div class="logo-text">AmpliScan</div>
+      <div class="logo-sub">Event Visual Map</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="header-domain">yogananda.org</div>
+    <div class="header-date">Generated 7 May 2026 at 13:03</div>
+  </div>
+</header>
+
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-value blue">8</div>
+    <div class="stat-label">Pages Mapped</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value green">2</div>
+    <div class="stat-label">Unique Events</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value" style="color:#00d4aa">8d since last scan</div>
+    <div class="stat-label">Staleness</div>
+  </div>
+  
+  <div class="stat">
+    <div class="stat-value" style="color:var(--accent2)">0</div>
+    <div class="stat-label">New Events</div>
+  </div>
+</div>
+
+<div class="mode-banner repeat">🔄 Repeat scan — showing only pages with new events</div>
+
+<main class="main">
+  
+    <div class="dropped-section">
+      <div class="dropped-title">❌ Dropped Events <span class="dropped-sub">No longer firing since last scan</span></div>
+      <div class="dropped-list">
+        <span class="dropped-tag">$identify</span><span class="dropped-tag">session_start</span>
+      </div>
+    </div>
+  
+      <div class="page-card" style="animation-delay:0s" id="page-0">
+        <div class="card-header">
+          <div class="page-meta">
+            <span class="page-number">01</span>
+            <div class="page-info">
+              <div class="page-url">yogananda.org/blog/category/wisdom</div>
+              <div class="page-counts">
+                <span class="event-count">2 events</span>
+                
+              </div>
+            </div>
+          </div>
+          <a href="https://yogananda.org/blog/category/wisdom" target="_blank" class="visit-link">↗ Open</a>
+        </div>
+        <div class="card-body">
+          <div class="screenshot-col">
+            <img src="screenshots/yogananda-org-blog-category-wisdom.png" alt="yogananda.org/blog/category/wisdom" loading="lazy" />
+          </div>
+          <div class="events-col">
+            <div class="events-label">Tracked Events</div>
+            <div class="events-list">
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">viewed page</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">page_name</span><span class="prop-tag">page_url</span><span class="prop-tag">domain</span><span class="prop-tag">referrer</span></div>
+        </div>
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">page scrolled</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">amount_scrolled</span><span class="prop-tag">page_URL</span></div>
+        </div></div>
+          </div>
+        </div>
+      </div>
+      <div class="page-card" style="animation-delay:0.07s" id="page-1">
+        <div class="card-header">
+          <div class="page-meta">
+            <span class="page-number">02</span>
+            <div class="page-info">
+              <div class="page-url">yogananda.org/blog/category/news-events</div>
+              <div class="page-counts">
+                <span class="event-count">2 events</span>
+                
+              </div>
+            </div>
+          </div>
+          <a href="https://yogananda.org/blog/category/news-events" target="_blank" class="visit-link">↗ Open</a>
+        </div>
+        <div class="card-body">
+          <div class="screenshot-col">
+            <img src="screenshots/yogananda-org-blog-category-news-events.png" alt="yogananda.org/blog/category/news-events" loading="lazy" />
+          </div>
+          <div class="events-col">
+            <div class="events-label">Tracked Events</div>
+            <div class="events-list">
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">viewed page</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">page_name</span><span class="prop-tag">page_url</span><span class="prop-tag">domain</span><span class="prop-tag">referrer</span></div>
+        </div>
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">page scrolled</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">amount_scrolled</span><span class="prop-tag">page_URL</span></div>
+        </div></div>
+          </div>
+        </div>
+      </div>
+      <div class="page-card" style="animation-delay:0.14s" id="page-2">
+        <div class="card-header">
+          <div class="page-meta">
+            <span class="page-number">03</span>
+            <div class="page-info">
+              <div class="page-url">yogananda.org/blog/category/messages-from-the-president</div>
+              <div class="page-counts">
+                <span class="event-count">2 events</span>
+                
+              </div>
+            </div>
+          </div>
+          <a href="https://yogananda.org/blog/category/messages-from-the-president" target="_blank" class="visit-link">↗ Open</a>
+        </div>
+        <div class="card-body">
+          <div class="screenshot-col">
+            <img src="screenshots/yogananda-org-blog-category-messages-from-the-president.png" alt="yogananda.org/blog/category/messages-from-the-president" loading="lazy" />
+          </div>
+          <div class="events-col">
+            <div class="events-label">Tracked Events</div>
+            <div class="events-list">
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">viewed page</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">page_name</span><span class="prop-tag">page_url</span><span class="prop-tag">domain</span><span class="prop-tag">referrer</span></div>
+        </div>
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">page scrolled</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">amount_scrolled</span><span class="prop-tag">page_URL</span></div>
+        </div></div>
+          </div>
+        </div>
+      </div>
+      <div class="page-card" style="animation-delay:0.21000000000000002s" id="page-3">
+        <div class="card-header">
+          <div class="page-meta">
+            <span class="page-number">04</span>
+            <div class="page-info">
+              <div class="page-url">yogananda.org/blog/category/voluntary-league-of-disciples</div>
+              <div class="page-counts">
+                <span class="event-count">2 events</span>
+                
+              </div>
+            </div>
+          </div>
+          <a href="https://yogananda.org/blog/category/voluntary-league-of-disciples" target="_blank" class="visit-link">↗ Open</a>
+        </div>
+        <div class="card-body">
+          <div class="screenshot-col">
+            <img src="screenshots/yogananda-org-blog-category-voluntary-league-of-disciples.png" alt="yogananda.org/blog/category/voluntary-league-of-disciples" loading="lazy" />
+          </div>
+          <div class="events-col">
+            <div class="events-label">Tracked Events</div>
+            <div class="events-list">
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">viewed page</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">page_name</span><span class="prop-tag">page_url</span><span class="prop-tag">domain</span><span class="prop-tag">referrer</span></div>
+        </div>
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">page scrolled</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">amount_scrolled</span><span class="prop-tag">page_URL</span></div>
+        </div></div>
+          </div>
+        </div>
+      </div>
+      <div class="page-card" style="animation-delay:0.28s" id="page-4">
+        <div class="card-header">
+          <div class="page-meta">
+            <span class="page-number">05</span>
+            <div class="page-info">
+              <div class="page-url">yogananda.org/blog/category/archive</div>
+              <div class="page-counts">
+                <span class="event-count">2 events</span>
+                
+              </div>
+            </div>
+          </div>
+          <a href="https://yogananda.org/blog/category/archive" target="_blank" class="visit-link">↗ Open</a>
+        </div>
+        <div class="card-body">
+          <div class="screenshot-col">
+            <img src="screenshots/yogananda-org-blog-category-archive.png" alt="yogananda.org/blog/category/archive" loading="lazy" />
+          </div>
+          <div class="events-col">
+            <div class="events-label">Tracked Events</div>
+            <div class="events-list">
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">viewed page</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">page_name</span><span class="prop-tag">page_url</span><span class="prop-tag">domain</span><span class="prop-tag">referrer</span></div>
+        </div>
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">page scrolled</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">amount_scrolled</span><span class="prop-tag">page_URL</span></div>
+        </div></div>
+          </div>
+        </div>
+      </div>
+      <div class="page-card" style="animation-delay:0.35000000000000003s" id="page-5">
+        <div class="card-header">
+          <div class="page-meta">
+            <span class="page-number">06</span>
+            <div class="page-info">
+              <div class="page-url">yogananda.org/blog</div>
+              <div class="page-counts">
+                <span class="event-count">2 events</span>
+                
+              </div>
+            </div>
+          </div>
+          <a href="https://yogananda.org/blog" target="_blank" class="visit-link">↗ Open</a>
+        </div>
+        <div class="card-body">
+          <div class="screenshot-col">
+            <img src="screenshots/yogananda-org-blog.png" alt="yogananda.org/blog" loading="lazy" />
+          </div>
+          <div class="events-col">
+            <div class="events-label">Tracked Events</div>
+            <div class="events-list">
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">viewed page</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">page_name</span><span class="prop-tag">page_url</span><span class="prop-tag">domain</span><span class="prop-tag">referrer</span></div>
+        </div>
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">page scrolled</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">amount_scrolled</span><span class="prop-tag">page_URL</span></div>
+        </div></div>
+          </div>
+        </div>
+      </div>
+      <div class="page-card" style="animation-delay:0.42000000000000004s" id="page-6">
+        <div class="card-header">
+          <div class="page-meta">
+            <span class="page-number">07</span>
+            <div class="page-info">
+              <div class="page-url">yogananda.org/blog/overcoming-fear-with-divine-vibrations-by-brother-chidananda</div>
+              <div class="page-counts">
+                <span class="event-count">2 events</span>
+                
+              </div>
+            </div>
+          </div>
+          <a href="https://yogananda.org/blog/overcoming-fear-with-divine-vibrations-by-brother-chidananda" target="_blank" class="visit-link">↗ Open</a>
+        </div>
+        <div class="card-body">
+          <div class="screenshot-col">
+            <img src="screenshots/yogananda-org-blog-overcoming-fear-with-divine-vibrations-by.png" alt="yogananda.org/blog/overcoming-fear-with-divine-vibrations-by-brother-chidananda" loading="lazy" />
+          </div>
+          <div class="events-col">
+            <div class="events-label">Tracked Events</div>
+            <div class="events-list">
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">viewed page</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">page_name</span><span class="prop-tag">page_url</span><span class="prop-tag">domain</span><span class="prop-tag">referrer</span></div>
+        </div>
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">page scrolled</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">amount_scrolled</span><span class="prop-tag">page_URL</span></div>
+        </div></div>
+          </div>
+        </div>
+      </div>
+      <div class="page-card" style="animation-delay:0.49000000000000005s" id="page-7">
+        <div class="card-header">
+          <div class="page-meta">
+            <span class="page-number">08</span>
+            <div class="page-info">
+              <div class="page-url">yogananda.org/blog/exercising-courage-is-the-way-to-develop-courage-sri-daya-mata</div>
+              <div class="page-counts">
+                <span class="event-count">2 events</span>
+                
+              </div>
+            </div>
+          </div>
+          <a href="https://yogananda.org/blog/exercising-courage-is-the-way-to-develop-courage-sri-daya-mata" target="_blank" class="visit-link">↗ Open</a>
+        </div>
+        <div class="card-body">
+          <div class="screenshot-col">
+            <img src="screenshots/yogananda-org-blog-exercising-courage-is-the-way-to-develop-.png" alt="yogananda.org/blog/exercising-courage-is-the-way-to-develop-courage-sri-daya-mata" loading="lazy" />
+          </div>
+          <div class="events-col">
+            <div class="events-label">Tracked Events</div>
+            <div class="events-list">
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">viewed page</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">page_name</span><span class="prop-tag">page_url</span><span class="prop-tag">domain</span><span class="prop-tag">referrer</span></div>
+        </div>
+        <div class="event-item ">
+          <div class="event-header">
+            <span class="amp-dot"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="12" fill="#1A6BFF"/><path d="M6 16L9.5 8L12 13L14 10L18 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="event-name">page scrolled</span>
+            
+          </div>
+          <div class="props"><span class="prop-tag">amount_scrolled</span><span class="prop-tag">page_URL</span></div>
+        </div></div>
+          </div>
+        </div>
+      </div>
+</main>
+
+<footer class="footer">
+  AmpliScan · yogananda.org · 7 May 2026 at 13:03 · Internal Amplitude system events filtered
+</footer>
+
+</body>
+</html>

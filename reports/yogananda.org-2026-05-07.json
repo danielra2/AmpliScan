@@ -1,0 +1,61 @@
+{
+  "domain": "yogananda.org",
+  "scanned_at": "2026-05-07T12:02:43.229Z",
+  "unique_events": 3,
+  "new_events": [],
+  "dropped_events": [
+    "$identify",
+    "session_start"
+  ],
+  "stale_days": 8,
+  "events": [
+    {
+      "event_type": "[Amplitude] Page Viewed",
+      "event_properties": {
+        "[Amplitude] Page Domain": "yogananda.org",
+        "[Amplitude] Page Location": "https://yogananda.org/blog/category/wisdom",
+        "[Amplitude] Page Path": "/blog/category/wisdom",
+        "[Amplitude] Page Title": "Self-Realization Fellowship | Wisdom & Inspiration",
+        "[Amplitude] Page URL": "https://yogananda.org/blog/category/wisdom",
+        "[Amplitude] Page Counter": 2
+      },
+      "user_properties": {},
+      "platform": "Web",
+      "os_name": null,
+      "app_version": null,
+      "captured_at": "2026-05-07T11:42:49.121Z",
+      "source_page": "https://yogananda.org/blog/category/wisdom",
+      "count": 20
+    },
+    {
+      "event_type": "viewed page",
+      "event_properties": {
+        "page_name": "/blog/category/wisdom",
+        "page_url": "https://yogananda.org/blog/category/wisdom",
+        "domain": "yogananda.org",
+        "referrer": ""
+      },
+      "user_properties": {},
+      "platform": "Web",
+      "os_name": null,
+      "app_version": null,
+      "captured_at": "2026-05-07T11:42:49.122Z",
+      "source_page": "https://yogananda.org/blog/category/wisdom",
+      "count": 20
+    },
+    {
+      "event_type": "page scrolled",
+      "event_properties": {
+        "amount_scrolled": 10,
+        "page_URL": "https://yogananda.org/blog/category/wisdom"
+      },
+      "user_properties": {},
+      "platform": "Web",
+      "os_name": null,
+      "app_version": null,
+      "captured_at": "2026-05-07T11:42:49.122Z",
+      "source_page": "https://yogananda.org/blog/category/wisdom",
+      "count": 116
+    }
+  ]
+}

@@ -4,8 +4,8 @@
       "$identify": {
         "event_type": "$identify",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-20T17:12:56.229Z",
-        "times_seen": 47,
+        "last_seen": "2026-04-27T16:38:10.260Z",
+        "times_seen": 89,
         "sample_properties": {
           "[Amplitude] Page Domain": "amplitude.com",
           "[Amplitude] Page Location": "https://amplitude.com/",
@@ -21,8 +21,8 @@
       "session_start": {
         "event_type": "session_start",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-20T17:12:56.229Z",
-        "times_seen": 21,
+        "last_seen": "2026-04-27T16:38:10.260Z",
+        "times_seen": 39,
         "sample_properties": {
           "[Amplitude] Page Domain": "amplitude.com",
           "[Amplitude] Page Location": "https://amplitude.com/",
@@ -39,8 +39,8 @@
       "[Amplitude] Page Viewed": {
         "event_type": "[Amplitude] Page Viewed",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-20T17:12:56.229Z",
-        "times_seen": 28,
+        "last_seen": "2026-04-27T16:38:10.260Z",
+        "times_seen": 52,
         "sample_properties": {
           "[Amplitude] Page Domain": "amplitude.com",
           "[Amplitude] Page Location": "https://amplitude.com/",
@@ -59,8 +59,8 @@
       "Page Viewed": {
         "event_type": "Page Viewed",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-20T17:12:56.229Z",
-        "times_seen": 12,
+        "last_seen": "2026-04-27T16:38:10.260Z",
+        "times_seen": 22,
         "sample_properties": {
           "path": "/",
           "referrer": "",
@@ -83,8 +83,8 @@
       "Video Played": {
         "event_type": "Video Played",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-20T17:12:56.229Z",
-        "times_seen": 20,
+        "last_seen": "2026-04-27T16:38:10.260Z",
+        "times_seen": 34,
         "sample_properties": {
           "pageName": "AI Analytics Platform for Modern Digital Analytics ",
           "progress": "0 %",
@@ -106,8 +106,8 @@
       "$exposure": {
         "event_type": "$exposure",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-20T17:12:56.229Z",
-        "times_seen": 18,
+        "last_seen": "2026-04-27T16:38:10.260Z",
+        "times_seen": 32,
         "sample_properties": {
           "flag_key": "guide-copy-of-monetization",
           "experiment_key": "exp-1",
@@ -135,8 +135,8 @@
       "[Amplitude] Viewport Content Updated": {
         "event_type": "[Amplitude] Viewport Content Updated",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-20T17:12:56.229Z",
-        "times_seen": 54,
+        "last_seen": "2026-04-27T16:38:10.260Z",
+        "times_seen": 87,
         "sample_properties": {
           "[Amplitude] Page URL": "https://amplitude.com/",
           "[Amplitude] Max Page X": 1280,
@@ -212,8 +212,8 @@
       "$impression": {
         "event_type": "$impression",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-20T17:12:56.229Z",
-        "times_seen": 93,
+        "last_seen": "2026-04-27T16:38:10.260Z",
+        "times_seen": 171,
         "sample_properties": {
           "flag_key": "q325-homepage-rebrand-starter-signup-cta-free",
           "experiment_key": "exp-1",
@@ -248,8 +248,8 @@
       "[Cookie-Control] viewed widget": {
         "event_type": "[Cookie-Control] viewed widget",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-20T17:12:56.229Z",
-        "times_seen": 7,
+        "last_seen": "2026-04-27T16:38:10.260Z",
+        "times_seen": 13,
         "sample_properties": {
           "[Amplitude] Page Domain": "amplitude.com",
           "[Amplitude] Page Location": "https://amplitude.com/",
@@ -266,8 +266,8 @@
       "Video Paused": {
         "event_type": "Video Paused",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-20T17:12:56.229Z",
-        "times_seen": 10,
+        "last_seen": "2026-04-27T16:38:10.260Z",
+        "times_seen": 16,
         "sample_properties": {
           "pageName": "AI Analytics Platform for Modern Digital Analytics ",
           "progress": "10 %",
@@ -290,8 +290,8 @@
       "session_end": {
         "event_type": "session_end",
         "first_seen": "2026-04-14T15:46:17.794Z",
-        "last_seen": "2026-04-15T09:06:26.235Z",
-        "times_seen": 6,
+        "last_seen": "2026-04-27T16:38:10.260Z",
+        "times_seen": 13,
         "sample_properties": {
           "[Amplitude] Page Domain": "amplitude.com",
           "[Amplitude] Page Location": "https://amplitude.com/",
@@ -335,6 +335,53 @@
           "[Amplitude] Page URL": "https://amplitude.com/",
           "[Amplitude] Previous Page Location": "https://amplitude.com/",
           "[Amplitude] Previous Page Type": "internal"
+        },
+        "platform": "Web",
+        "app_version": null
+      },
+      "[Guides-Surveys] Guide Viewed": {
+        "event_type": "[Guides-Surveys] Guide Viewed",
+        "first_seen": "2026-04-27T16:19:31.550Z",
+        "last_seen": "2026-04-27T16:38:10.260Z",
+        "times_seen": 4,
+        "sample_properties": {
+          "[Guides-Surveys] Title": "AI Assistant Apr'21 webinar registration",
+          "[Guides-Surveys] Type": "tour",
+          "[Guides-Surveys] Key": "guide-ai-assistant-apr-21-",
+          "[Guides-Surveys] Tags": [],
+          "[Guides-Surveys] Variant ID": "treatment-4jh3",
+          "[Guides-Surveys] Step ID": 92999,
+          "[Guides-Surveys] Step Index": 0,
+          "[Guides-Surveys] Step Title": "",
+          "[Guides-Surveys] Is Last Step": true,
+          "[Guides-Surveys] Lifecycle UUID": "f46088ee-82f2-4949-bcf2-9f31f5fa5512",
+          "[Guides-Surveys] Is From Debug Mode": false,
+          "[Guides-Surveys] Is From Test Mode": false,
+          "[Guides-Surveys] App Type": "web",
+          "[Guides-Surveys] History Version": 5,
+          "[Guides-Surveys] Segment Name": "All Other Users",
+          "[Guides-Surveys] Source": {
+            "type": "trigger",
+            "properties": {
+              "triggerType": "immediately"
+            }
+          },
+          "[Guides-Surveys] Evaluation ID": "1554689589365_1777306704503_2679",
+          "[Guides-Surveys] Version": "1",
+          "[Guides-Surveys] Page": {
+            "domain": "amplitude.com",
+            "hash": "",
+            "path": "/",
+            "query": "",
+            "title": "AI Analytics Platform for Modern Digital Analytics | Amplitude"
+          },
+          "[Amplitude] Page Domain": "amplitude.com",
+          "[Amplitude] Page Location": "https://amplitude.com/",
+          "[Amplitude] Page Path": "/",
+          "[Amplitude] Page Title": "AI Analytics Platform for Modern Digital Analytics | Amplitude",
+          "[Amplitude] Page URL": "https://amplitude.com/",
+          "[Amplitude] Previous Page Location": "",
+          "[Amplitude] Previous Page Type": "direct"
         },
         "platform": "Web",
         "app_version": null
@@ -385,9 +432,33 @@
           "session_end",
           "[Amplitude] Network Request"
         ]
+      },
+      {
+        "scan_id": "amplitude.com-1777306771550",
+        "scanned_at": "2026-04-27T16:19:31.550Z",
+        "pages_visited": 3,
+        "total_events": 128,
+        "unique_events": 12,
+        "new_events": [
+          "[Guides-Surveys] Guide Viewed"
+        ],
+        "dropped_events": [
+          "[Amplitude] Network Request"
+        ]
+      },
+      {
+        "scan_id": "amplitude.com-1777307890260",
+        "scanned_at": "2026-04-27T16:38:10.260Z",
+        "pages_visited": 3,
+        "total_events": 128,
+        "unique_events": 12,
+        "new_events": [],
+        "dropped_events": [
+          "[Amplitude] Network Request"
+        ]
       }
     ],
-    "lastScan": "2026-04-20T17:12:56.229Z"
+    "lastScan": "2026-04-27T16:38:10.260Z"
   },
   "http://szallas.hu/": {
     "events": {
@@ -636,5 +707,208 @@
       }
     ],
     "lastScan": "2026-04-16T18:20:37.023Z"
+  },
+  "https://yogananda.org/": {
+    "events": {
+      "$identify": {
+        "event_type": "$identify",
+        "first_seen": "2026-04-28T14:18:12.967Z",
+        "last_seen": "2026-04-28T14:18:12.967Z",
+        "times_seen": 1,
+        "sample_properties": {},
+        "platform": "Web",
+        "app_version": null
+      },
+      "session_start": {
+        "event_type": "session_start",
+        "first_seen": "2026-04-28T14:18:12.967Z",
+        "last_seen": "2026-04-28T14:18:12.967Z",
+        "times_seen": 1,
+        "sample_properties": {},
+        "platform": "Web",
+        "app_version": null
+      },
+      "[Amplitude] Page Viewed": {
+        "event_type": "[Amplitude] Page Viewed",
+        "first_seen": "2026-04-28T14:18:12.967Z",
+        "last_seen": "2026-04-28T14:18:12.967Z",
+        "times_seen": 3,
+        "sample_properties": {
+          "[Amplitude] Page Domain": "yogananda.org",
+          "[Amplitude] Page Location": "https://yogananda.org/",
+          "[Amplitude] Page Path": "/",
+          "[Amplitude] Page Title": "Self-Realization Fellowship | Home",
+          "[Amplitude] Page URL": "https://yogananda.org/",
+          "[Amplitude] Page Counter": 1
+        },
+        "platform": "Web",
+        "app_version": null
+      },
+      "viewed page": {
+        "event_type": "viewed page",
+        "first_seen": "2026-04-28T14:18:12.967Z",
+        "last_seen": "2026-04-28T14:18:12.967Z",
+        "times_seen": 3,
+        "sample_properties": {
+          "page_name": "/",
+          "page_url": "https://yogananda.org/",
+          "domain": "yogananda.org",
+          "referrer": ""
+        },
+        "platform": "Web",
+        "app_version": null
+      },
+      "page scrolled": {
+        "event_type": "page scrolled",
+        "first_seen": "2026-04-28T14:18:12.967Z",
+        "last_seen": "2026-04-28T14:18:12.967Z",
+        "times_seen": 17,
+        "sample_properties": {
+          "amount_scrolled": 10,
+          "page_URL": "https://yogananda.org/"
+        },
+        "platform": "Web",
+        "app_version": null
+      }
+    },
+    "scans": [
+      {
+        "scan_id": "https://yogananda.org/-1777385892967",
+        "scanned_at": "2026-04-28T14:18:12.967Z",
+        "pages_visited": 3,
+        "total_events": 25,
+        "unique_events": 5,
+        "new_events": [
+          "$identify",
+          "session_start",
+          "[Amplitude] Page Viewed",
+          "viewed page",
+          "page scrolled"
+        ],
+        "dropped_events": []
+      }
+    ],
+    "lastScan": "2026-04-28T14:18:12.967Z"
+  },
+  "yogananda.org": {
+    "events": {
+      "$identify": {
+        "event_type": "$identify",
+        "first_seen": "2026-04-28T14:23:03.325Z",
+        "last_seen": "2026-04-28T15:46:23.023Z",
+        "times_seen": 4,
+        "sample_properties": {},
+        "platform": "Web",
+        "app_version": null
+      },
+      "session_start": {
+        "event_type": "session_start",
+        "first_seen": "2026-04-28T14:23:03.325Z",
+        "last_seen": "2026-04-28T15:46:23.023Z",
+        "times_seen": 4,
+        "sample_properties": {},
+        "platform": "Web",
+        "app_version": null
+      },
+      "[Amplitude] Page Viewed": {
+        "event_type": "[Amplitude] Page Viewed",
+        "first_seen": "2026-04-28T14:23:03.325Z",
+        "last_seen": "2026-05-07T12:02:43.229Z",
+        "times_seen": 76,
+        "sample_properties": {
+          "[Amplitude] Page Domain": "yogananda.org",
+          "[Amplitude] Page Location": "https://yogananda.org/",
+          "[Amplitude] Page Path": "/",
+          "[Amplitude] Page Title": "Self-Realization Fellowship | Home",
+          "[Amplitude] Page URL": "https://yogananda.org/",
+          "[Amplitude] Page Counter": 1
+        },
+        "platform": "Web",
+        "app_version": null
+      },
+      "viewed page": {
+        "event_type": "viewed page",
+        "first_seen": "2026-04-28T14:23:03.325Z",
+        "last_seen": "2026-05-07T12:02:43.229Z",
+        "times_seen": 76,
+        "sample_properties": {
+          "page_name": "/",
+          "page_url": "https://yogananda.org/",
+          "domain": "yogananda.org",
+          "referrer": ""
+        },
+        "platform": "Web",
+        "app_version": null
+      },
+      "page scrolled": {
+        "event_type": "page scrolled",
+        "first_seen": "2026-04-28T14:23:03.325Z",
+        "last_seen": "2026-05-07T12:02:43.229Z",
+        "times_seen": 433,
+        "sample_properties": {
+          "amount_scrolled": 10,
+          "page_URL": "https://yogananda.org/"
+        },
+        "platform": "Web",
+        "app_version": null
+      }
+    },
+    "scans": [
+      {
+        "scan_id": "yogananda.org-1777386183325",
+        "scanned_at": "2026-04-28T14:23:03.325Z",
+        "pages_visited": 3,
+        "total_events": 25,
+        "unique_events": 5,
+        "new_events": [
+          "$identify",
+          "session_start",
+          "[Amplitude] Page Viewed",
+          "viewed page",
+          "page scrolled"
+        ],
+        "dropped_events": []
+      },
+      {
+        "scan_id": "yogananda.org-1777387179729",
+        "scanned_at": "2026-04-28T14:39:39.729Z",
+        "pages_visited": 3,
+        "total_events": 26,
+        "unique_events": 5,
+        "new_events": [],
+        "dropped_events": []
+      },
+      {
+        "scan_id": "yogananda.org-1777387775095",
+        "scanned_at": "2026-04-28T14:49:35.095Z",
+        "pages_visited": 3,
+        "total_events": 26,
+        "unique_events": 5,
+        "new_events": [],
+        "dropped_events": []
+      },
+      {
+        "scan_id": "yogananda.org-1777391183023",
+        "scanned_at": "2026-04-28T15:46:23.023Z",
+        "pages_visited": 100,
+        "total_events": 360,
+        "unique_events": 5,
+        "new_events": [],
+        "dropped_events": []
+      },
+      {
+        "scan_id": "yogananda.org-1778155363229",
+        "scanned_at": "2026-05-07T12:02:43.229Z",
+        "pages_visited": 20,
+        "total_events": 156,
+        "unique_events": 3,
+        "new_events": [],
+        "dropped_events": [
+          "$identify",
+          "session_start"
+        ]
+      }
+    ],
+    "lastScan": "2026-05-07T12:02:43.229Z"
   }
 }

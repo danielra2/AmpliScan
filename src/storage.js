@@ -1,35 +1,26 @@
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
-import path from 'path';
 
 const DB_PATH = './reports/events-db.json';
-
-// ─── Load / Save local DB ─────────────────────────────────────────────────────
 
 function loadDB() {
   if (!existsSync('./reports')) mkdirSync('./reports');
   if (!existsSync(DB_PATH)) return {};
-  try {
-    return JSON.parse(readFileSync(DB_PATH, 'utf-8'));
-  } catch {
-    return {};
-  }
+  try { return JSON.parse(readFileSync(DB_PATH, 'utf-8')); } catch { return {}; }
 }
 
 function saveDB(db) {
   writeFileSync(DB_PATH, JSON.stringify(db, null, 2));
 }
 
-// ─── Main export ──────────────────────────────────────────────────────────────
-
-/**
- * Saves scan results locally and returns a diff vs previous scan.
- */
 export async function saveScanResults(domain, events, scanMeta = {}) {
+  // Clean domain — strip protocol and trailing slashes
+  domain = domain.replace(/^https?:\/\//, '').replace(/\/$/, '');
+
   const db = loadDB();
   const scannedAt = new Date().toISOString();
   const scanId = `${domain}-${Date.now()}`;
 
-  // ── 1. Deduplicate captured events ────────────────────────────────────────
+  // 1. Deduplicate
   const uniqueMap = new Map();
   for (const ev of events) {
     const key = ev.event_type;
@@ -40,12 +31,12 @@ export async function saveScanResults(domain, events, scanMeta = {}) {
     }
   }
 
-  // ── 2. Load previous events for this domain ───────────────────────────────
+  // 2. Load previous
   const previousEvents = db[domain]?.events || {};
   const previousEventNames = new Set(Object.keys(previousEvents));
   const currentEventNames = new Set(uniqueMap.keys());
 
-  // ── 3. Diff ───────────────────────────────────────────────────────────────
+  // 3. Diff
   const newEvents = [...currentEventNames].filter((e) => !previousEventNames.has(e));
   const droppedEvents = [...previousEventNames].filter((e) => !currentEventNames.has(e));
 
@@ -55,7 +46,7 @@ export async function saveScanResults(domain, events, scanMeta = {}) {
     ? Math.floor((Date.now() - lastScanDate) / 86_400_000)
     : null;
 
-  // ── 4. Update DB ──────────────────────────────────────────────────────────
+  // 4. Update DB
   if (!db[domain]) db[domain] = { events: {}, scans: [] };
 
   for (const [eventType, ev] of uniqueMap) {
@@ -88,23 +79,19 @@ export async function saveScanResults(domain, events, scanMeta = {}) {
 
   saveDB(db);
 
-  // ── 5. Save a per-scan JSON report ────────────────────────────────────────
+  // 5. Per-scan JSON report
   const reportPath = `./reports/${domain}-${scannedAt.split('T')[0]}.json`;
   writeFileSync(
     reportPath,
-    JSON.stringify(
-      {
-        domain,
-        scanned_at: scannedAt,
-        unique_events: uniqueMap.size,
-        new_events: newEvents,
-        dropped_events: droppedEvents,
-        stale_days: staleDays,
-        events: [...uniqueMap.values()],
-      },
-      null,
-      2
-    )
+    JSON.stringify({
+      domain,
+      scanned_at: scannedAt,
+      unique_events: uniqueMap.size,
+      new_events: newEvents,
+      dropped_events: droppedEvents,
+      stale_days: staleDays,
+      events: [...uniqueMap.values()],
+    }, null, 2)
   );
 
   return { newEvents, droppedEvents, staleDays, scanId, uniqueEventCount: uniqueMap.size, reportPath };

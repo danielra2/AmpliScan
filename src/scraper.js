@@ -1,4 +1,5 @@
 import { chromium } from 'playwright';
+import * as readline from 'readline';
 
 const AMPLITUDE_HOSTS = [
   'api.amplitude.com',
@@ -30,173 +31,75 @@ function decodeAmplitudePayload(body, contentType) {
   }
 }
 
-async function installInteractionTracker(context) {
-  await context.addInitScript(() => {
-    function selectorFor(el) {
-      if (!el || !el.tagName) return 'unknown';
-      if (el.id) return `${el.tagName.toLowerCase()}#${el.id}`;
+/**
+ * Fetches all URLs from a sitemap or sitemap index.
+ */
+async function fetchSitemapUrls(domain) {
+  const sitemapUrl = `https://${domain}/sitemap.xml`;
+  console.log(`\n  🗺️  Fetching sitemap: ${sitemapUrl}`);
 
-      const classes = Array.from(el.classList || []).slice(0, 2).join('.');
-      if (classes) return `${el.tagName.toLowerCase()}.${classes}`;
+  try {
+    const res = await fetch(sitemapUrl);
+    if (!res.ok) return null;
+    const xml = await res.text();
 
-      const parent = el.parentElement;
-      if (!parent) return el.tagName.toLowerCase();
-      const siblings = Array.from(parent.children).filter((n) => n.tagName === el.tagName);
-      const index = Math.max(1, siblings.indexOf(el) + 1);
-      return `${el.tagName.toLowerCase()}:nth-of-type(${index})`;
+    const urls = [];
+    const isIndex = xml.includes('<sitemapindex');
+
+    if (isIndex) {
+      const subSitemaps = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map(m => m[1].trim());
+      console.log(`  🗺️  Found sitemap index with ${subSitemaps.length} sub-sitemaps`);
+
+      const results = await Promise.allSettled(
+        subSitemaps.map(async (subUrl) => {
+          try {
+            const r = await fetch(subUrl);
+            if (!r.ok) return [];
+            const subXml = await r.text();
+            return [...subXml.matchAll(/<loc>(.*?)<\/loc>/g)]
+              .map(m => m[1].trim())
+              .filter(u => u.startsWith('http') && !u.endsWith('.xml'));
+          } catch { return []; }
+        })
+      );
+
+      for (const r of results) {
+        if (r.status === 'fulfilled') urls.push(...r.value);
+      }
+    } else {
+      const found = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)]
+        .map(m => m[1].trim())
+        .filter(u => u.startsWith('http') && !u.endsWith('.xml'));
+      urls.push(...found);
     }
 
-    function storeInteraction(target, clientX = null, clientY = null) {
-      if (!target) return;
-
-      const rect = target.getBoundingClientRect ? target.getBoundingClientRect() : null;
-      const x = typeof clientX === 'number' ? clientX : rect ? rect.left + rect.width / 2 : null;
-      const y = typeof clientY === 'number' ? clientY : rect ? rect.top + rect.height / 2 : null;
-
-      window.__ampliscanLastInteraction = {
-        ts: Date.now(),
-        pageUrl: window.location.href,
-        selector: selectorFor(target),
-        tag: target.tagName ? target.tagName.toLowerCase() : null,
-        text: (target.innerText || target.textContent || '').trim().slice(0, 80),
-        x,
-        y,
-        viewportWidth: window.innerWidth,
-        viewportHeight: window.innerHeight,
-      };
-    }
-
-    document.addEventListener(
-      'click',
-      (event) => {
-        storeInteraction(event.target, event.clientX, event.clientY);
-      },
-      { capture: true }
-    );
-
-    document.addEventListener(
-      'submit',
-      (event) => {
-        const form = event.target;
-        if (!form) return;
-        const rect = form.getBoundingClientRect ? form.getBoundingClientRect() : null;
-        storeInteraction(form, rect ? rect.left + rect.width / 2 : null, rect ? rect.top + rect.height / 2 : null);
-      },
-      { capture: true }
-    );
-  });
+    const unique = [...new Set(urls)];
+    console.log(`  🗺️  Found ${unique.length} URLs in sitemap`);
+    return unique;
+  } catch (err) {
+    console.warn(`  ⚠️  Could not fetch sitemap: ${err.message}`);
+    return null;
+  }
 }
 
-async function performLogin(page, username, password, loginUrl) {
-  try {
-    console.log(`🔐 Attempting login at ${loginUrl}`);
-    
-    await page.goto(loginUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
-    await page.waitForTimeout(1000);
-
-    // Common email/username field selectors
-    const emailSelectors = [
-      'input[type="email"]',
-      'input[name="email"]',
-      'input[name="username"]',
-      'input[id*="email"]',
-      'input[id*="username"]',
-      'input[placeholder*="email" i]',
-      'input[placeholder*="username" i]',
-    ];
-
-    // Common password field selectors
-    const passwordSelectors = [
-      'input[type="password"]',
-      'input[name="password"]',
-      'input[id*="password"]',
-    ];
-
-    // Common submit button selectors
-    const submitSelectors = [
-      'button[type="submit"]',
-      'button:has-text("Log in")',
-      'button:has-text("Sign in")',
-      'button:has-text("Login")',
-      '[role="button"]:has-text("Log in")',
-    ];
-
-    // Try to fill email field
-    let emailFilled = false;
-    for (const selector of emailSelectors) {
-      try {
-        const element = await page.$(selector);
-        if (element) {
-          await element.fill(username);
-          emailFilled = true;
-          console.log(`  ✓ Filled email/username field`);
-          break;
-        }
-      } catch { }
-    }
-
-    if (!emailFilled) {
-      console.warn(`  ⚠️  Could not find email/username field`);
-      return false;
-    }
-
-    // Try to fill password field
-    let passwordFilled = false;
-    for (const selector of passwordSelectors) {
-      try {
-        const element = await page.$(selector);
-        if (element) {
-          await element.fill(password);
-          passwordFilled = true;
-          console.log(`  ✓ Filled password field`);
-          break;
-        }
-      } catch { }
-    }
-
-    if (!passwordFilled) {
-      console.warn(`  ⚠️  Could not find password field`);
-      return false;
-    }
-
-    // Click submit button
-    let submitted = false;
-    for (const selector of submitSelectors) {
-      try {
-        const element = await page.$(selector);
-        if (element) {
-          await element.click();
-          submitted = true;
-          console.log(`  ✓ Clicked login button`);
-          break;
-        }
-      } catch { }
-    }
-
-    if (!submitted) {
-      console.warn(`  ⚠️  Could not find submit button`);
-      return false;
-    }
-
-    // Wait for navigation after login
-    try {
-      await page.waitForNavigation({ timeout: 10000 });
-    } catch {
-      // Navigation might not happen, that's ok
-    }
-
-    await page.waitForTimeout(2000);
-    console.log(`  ✅ Login successful, starting authenticated crawl`);
-    return true;
-  } catch (err) {
-    console.error(`  ❌ Login failed: ${err.message}`);
-    return false;
-  }
+/**
+ * Waits for the user to press Enter in the terminal.
+ */
+function waitForEnter(message) {
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+    });
+    rl.question(message, () => {
+      rl.close();
+      resolve();
+    });
+  });
 }
 
 async function simulateInteractions(page) {
   try {
-    // Scroll slowly down
     await page.evaluate(async () => {
       await new Promise((resolve) => {
         let scrolled = 0;
@@ -215,13 +118,11 @@ async function simulateInteractions(page) {
     await page.evaluate(() => window.scrollTo(0, 0));
     await page.waitForTimeout(500);
 
-    // Move mouse around
     const { width, height } = page.viewportSize();
     await page.mouse.move(width / 2, height / 2);
     await page.mouse.move(width / 4, height / 4);
     await page.mouse.move((width * 3) / 4, height / 2);
 
-    // Hover over nav elements
     const safeSelectors = [
       'nav a', 'header a', '.nav a',
       '[role="navigation"] a',
@@ -249,49 +150,69 @@ async function simulateInteractions(page) {
 }
 
 export async function scrapeDomain(domain, options = {}) {
-  const { maxPages = 10, headless = true, waitMs = 5000, username = null, password = null, loginUrl = null } = options;
+  const { maxPages = 10, headless = true, waitMs = 5000, manualLogin = false } = options;
 
-  const startUrl = domain.startsWith('http') ? domain : `https://${domain}`;
+  const startUrl = `https://${domain}`;
   const capturedEvents = [];
   const visitedUrls = new Set();
-  let queuedUrls = [startUrl];
 
   console.log(`\n🔍 Starting scan of ${domain}`);
 
-  const browser = await chromium.launch({ headless });
+  // Try sitemap first
+  let urlQueue = [];
+  const sitemapUrls = await fetchSitemapUrls(domain);
+
+  if (sitemapUrls && sitemapUrls.length > 0) {
+    urlQueue = sitemapUrls.slice(0, maxPages);
+    console.log(`  ✅ Using sitemap — will visit ${urlQueue.length} of ${sitemapUrls.length} pages`);
+  } else {
+    console.log(`  ℹ️  No sitemap found — crawling from homepage`);
+    urlQueue = [startUrl];
+  }
+
+  // Manual login requires headed mode
+  const launchHeadless = manualLogin ? false : headless;
+
+  const browser = await chromium.launch({ headless: launchHeadless });
   const context = await browser.newContext({
     userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
     viewport: { width: 1280, height: 800 },
   });
 
-  await installInteractionTracker(context);
-
   const page = await context.newPage();
 
+  // ── Manual login flow ────────────────────────────────────────────────────
+  if (manualLogin) {
+    console.log('\n' + '═'.repeat(50));
+    console.log('  🔐 MANUAL LOGIN MODE');
+    console.log('═'.repeat(50));
+    console.log('  A browser window has opened.');
+    console.log(`  1. Navigate to the login page on ${domain}`);
+    console.log('  2. Log in with your credentials');
+    console.log('  3. Once you are fully logged in, come back here');
+    console.log('  4. Press ENTER to start scanning\n');
+
+    // Open the homepage so the user has a starting point
+    await page.goto(startUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+
+    await waitForEnter('  ✋ Press ENTER when you are logged in and ready to scan...');
+
+    console.log('\n  ✅ Login confirmed — starting scan!\n');
+    console.log('═'.repeat(50) + '\n');
+  }
+
+  // ── Event interceptor ────────────────────────────────────────────────────
   page.on('request', async (request) => {
     const url = request.url();
     const isAmplitude = AMPLITUDE_HOSTS.some((h) => url.includes(h));
     if (!isAmplitude) return;
-
     try {
       const postData = request.postData() || '';
       const headers = request.headers();
       const contentType = headers['content-type'] || '';
       const events = decodeAmplitudePayload(postData, contentType);
-      const lastInteraction = await page
-        .evaluate(() => window.__ampliscanLastInteraction || null)
-        .catch(() => null);
-      const now = Date.now();
-
       for (const ev of events) {
         if (!ev || !ev.event_type) continue;
-
-        const isRecentInteraction =
-          lastInteraction &&
-          lastInteraction.pageUrl === page.url() &&
-          typeof lastInteraction.ts === 'number' &&
-          now - lastInteraction.ts <= 5000;
-
         capturedEvents.push({
           event_type: ev.event_type,
           event_properties: ev.event_properties || {},
@@ -301,17 +222,6 @@ export async function scrapeDomain(domain, options = {}) {
           app_version: ev.app_version || null,
           captured_at: new Date().toISOString(),
           source_page: page.url(),
-          interaction: isRecentInteraction
-            ? {
-                selector: lastInteraction.selector || null,
-                tag: lastInteraction.tag || null,
-                text: lastInteraction.text || null,
-                x: lastInteraction.x,
-                y: lastInteraction.y,
-                viewport_width: lastInteraction.viewportWidth || null,
-                viewport_height: lastInteraction.viewportHeight || null,
-              }
-            : null,
         });
         console.log(`  ✅ Event: ${ev.event_type}`);
       }
@@ -325,30 +235,24 @@ export async function scrapeDomain(domain, options = {}) {
     console.log(`  📡 Amplitude endpoint hit: ${url.split('?')[0]}`);
   });
 
+  // ── Crawl pages ──────────────────────────────────────────────────────────
   let pagesVisited = 0;
 
-  // Perform login if credentials provided
-  if (username && password && loginUrl) {
-    const loginSuccess = await performLogin(page, username, password, loginUrl);
-    if (!loginSuccess) {
-      console.warn(`\n⚠️  Login failed, proceeding with anonymous crawl`);
-    }
-  }
-
-  while (queuedUrls.length > 0 && pagesVisited < maxPages) {
-    const url = queuedUrls.shift();
+  while (urlQueue.length > 0 && pagesVisited < maxPages) {
+    const url = urlQueue.shift();
     if (visitedUrls.has(url)) continue;
     visitedUrls.add(url);
 
     try {
-      console.log(`\n  📄 Visiting: ${url}`);
+      console.log(`\n  📄 [${pagesVisited + 1}/${Math.min(urlQueue.length + pagesVisited + 1, maxPages)}] Visiting: ${url}`);
       await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await page.waitForTimeout(waitMs);
       await simulateInteractions(page);
       await page.waitForTimeout(2000);
       pagesVisited++;
 
-      if (pagesVisited < maxPages) {
+      // If NOT using sitemap, discover links normally
+      if (!sitemapUrls && pagesVisited < maxPages) {
         const links = await page.evaluate((base) => {
           return Array.from(document.querySelectorAll('a[href]'))
             .map((a) => a.href)
@@ -362,10 +266,8 @@ export async function scrapeDomain(domain, options = {}) {
             .slice(0, 20);
         }, startUrl);
 
-        
-
         for (const link of links) {
-          if (!visitedUrls.has(link)) queuedUrls.push(link);
+          if (!visitedUrls.has(link)) urlQueue.push(link);
         }
       }
     } catch (err) {

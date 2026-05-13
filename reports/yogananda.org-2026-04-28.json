@@ -1,0 +1,123 @@
+{
+  "domain": "yogananda.org",
+  "scanned_at": "2026-04-28T15:46:23.023Z",
+  "unique_events": 5,
+  "new_events": [],
+  "dropped_events": [],
+  "stale_days": 0,
+  "events": [
+    {
+      "event_type": "$identify",
+      "event_properties": {},
+      "user_properties": {
+        "$setOnce": {
+          "initial_utm_campaign": "EMPTY",
+          "initial_utm_content": "EMPTY",
+          "initial_utm_id": "EMPTY",
+          "initial_utm_medium": "EMPTY",
+          "initial_utm_source": "EMPTY",
+          "initial_utm_term": "EMPTY",
+          "initial_referrer": "EMPTY",
+          "initial_referring_domain": "EMPTY",
+          "initial_dclid": "EMPTY",
+          "initial_gbraid": "EMPTY",
+          "initial_gclid": "EMPTY",
+          "initial_fbclid": "EMPTY",
+          "initial_ko_click_id": "EMPTY",
+          "initial_li_fat_id": "EMPTY",
+          "initial_msclkid": "EMPTY",
+          "initial_rtd_cid": "EMPTY",
+          "initial_ttclid": "EMPTY",
+          "initial_twclid": "EMPTY",
+          "initial_wbraid": "EMPTY"
+        },
+        "$unset": {
+          "utm_campaign": "-",
+          "utm_content": "-",
+          "utm_id": "-",
+          "utm_medium": "-",
+          "utm_source": "-",
+          "utm_term": "-",
+          "referrer": "-",
+          "referring_domain": "-",
+          "dclid": "-",
+          "gbraid": "-",
+          "gclid": "-",
+          "fbclid": "-",
+          "ko_click_id": "-",
+          "li_fat_id": "-",
+          "msclkid": "-",
+          "rtd_cid": "-",
+          "ttclid": "-",
+          "twclid": "-",
+          "wbraid": "-"
+        }
+      },
+      "platform": "Web",
+      "os_name": null,
+      "app_version": null,
+      "captured_at": "2026-04-28T14:55:30.562Z",
+      "source_page": "https://yogananda.org/blog/category/wisdom",
+      "count": 1
+    },
+    {
+      "event_type": "session_start",
+      "event_properties": {},
+      "user_properties": {},
+      "platform": "Web",
+      "os_name": null,
+      "app_version": null,
+      "captured_at": "2026-04-28T14:55:30.563Z",
+      "source_page": "https://yogananda.org/blog/category/wisdom",
+      "count": 1
+    },
+    {
+      "event_type": "[Amplitude] Page Viewed",
+      "event_properties": {
+        "[Amplitude] Page Domain": "yogananda.org",
+        "[Amplitude] Page Location": "https://yogananda.org/blog/category/wisdom",
+        "[Amplitude] Page Path": "/blog/category/wisdom",
+        "[Amplitude] Page Title": "Self-Realization Fellowship | Wisdom & Inspiration",
+        "[Amplitude] Page URL": "https://yogananda.org/blog/category/wisdom",
+        "[Amplitude] Page Counter": 1
+      },
+      "user_properties": {},
+      "platform": "Web",
+      "os_name": null,
+      "app_version": null,
+      "captured_at": "2026-04-28T14:55:30.563Z",
+      "source_page": "https://yogananda.org/blog/category/wisdom",
+      "count": 47
+    },
+    {
+      "event_type": "viewed page",
+      "event_properties": {
+        "page_name": "/blog/category/wisdom",
+        "page_url": "https://yogananda.org/blog/category/wisdom",
+        "domain": "yogananda.org",
+        "referrer": ""
+      },
+      "user_properties": {},
+      "platform": "Web",
+      "os_name": null,
+      "app_version": null,
+      "captured_at": "2026-04-28T14:55:30.563Z",
+      "source_page": "https://yogananda.org/blog/category/wisdom",
+      "count": 47
+    },
+    {
+      "event_type": "page scrolled",
+      "event_properties": {
+        "amount_scrolled": 10,
+        "page_URL": "https://yogananda.org/blog/category/wisdom"
+      },
+      "user_properties": {},
+      "platform": "Web",
+      "os_name": null,
+      "app_version": null,
+      "captured_at": "2026-04-28T14:55:30.563Z",
+      "source_page": "https://yogananda.org/blog/category/wisdom",
+      "count": 264
+    }
+  ]
+}
